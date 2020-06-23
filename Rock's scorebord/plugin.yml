@@ -1,0 +1,8 @@
+name: Rock's Scoreboard
+main: Rock\Scoreboard\Scoreboard
+api: [3.0.0]
+version: 5.2.0
+author: RockIPTGames123
+description: Add customizable scoreboards to your PocketMine server.
+
+

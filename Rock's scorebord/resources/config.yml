@@ -1,0 +1,53 @@
+#__________               __   /\          _________                         ___.                          .___
+#\______   \ ____   ____ |  | _)/ ______  /   _____/ ____  ___________   ____\_ |__   _________ _______  __| _/
+# |       _//  _ \_/ ___\|  |/ / /  ___/  \_____  \_/ ___\/  _ \_  __ \_/ __ \| __ \ /  _ \__  \\_  __ \/ __ | 
+# |    |   (  <_> )  \___|    <  \___ \   /        \  \__(  <_> )  | \/\  ___/| \_\ (  <_> ) __ \|  | \/ /_/ | 
+# |____|_  /\____/ \___  >__|_ \/____  > /_______  /\___  >____/|__|    \___  >___  /\____(____  /__|  \____ | 
+#        \/            \/     \/     \/          \/     \/                  \/    \/           \/           \/ 
+#
+# Rock's Scoreboard, a Scoreboard plugin for PocketMine-MP
+#
+# Any problems contact me on:
+# Discord: IAJ#7648
+# 
+#
+#
+#
+#  
+
+# DO NOT EDIT THIS VALUE.
+config-version: 8
+
+# Set this to true if you want to enable per world scoreboards.
+# Then edit scoreboards key in scorehud.yml to suit your needs.
+per-world-scoreboards: false
+
+# If you have per-world-scoreboards enabled and you want to display a default scoreboard for a world
+# whose scoreboard you didn't set in scorehud.yml under scoreboards key then set this to true.
+use-default-score-lines: false
+
+# The amount in seconds after which the Scoreboard would update.
+# Increase this value if your server seems to lag.
+# Default: 3 seconds.
+update-interval: 3
+
+# Set the timezone for {time} to your own preference.
+# false - Follow the server/machine time without changes.
+# For a list of timezones you can visit: https://secure.php.net/manual/timezones.php
+# Example: "America/New_York" - This will set NewYork's time.
+timezone: false
+
+# Set the time format that you want to display. Will only work if you add {time} in score-lines in data.yml.
+# H - hours
+# i - minutes
+# s - seconds
+# You can fine more information regarding it here: http://php.net/manual/function.date.php
+time-format: "H:i:s"
+
+# Set the date format that you want to display. Will only work if you add {date} in score-lines in data.yml.
+# d - date (01-31)
+# m - month (01-12)
+# Y - year (yyyy)
+# You can fine more information regarding it here: http://php.net/manual/function.date.php
+date-format: "d-m-Y"
+...
