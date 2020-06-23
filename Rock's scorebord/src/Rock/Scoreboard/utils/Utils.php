@@ -38,7 +38,7 @@ class Utils{
 
 		foreach($requiredVirions as $class){
 			if(!class_exists($class)){
-				throw new RuntimeException("ScoreHud plugin will only work if you use the plugin phar from Poggit.");
+				throw new RuntimeException("Scoreboard plugin will only work if you use the plugin phar from Poggit.");
 			}
 		}
 	}
@@ -49,7 +49,7 @@ class Utils{
 	 */
 	public static function setTimezone($timezone): bool{
 		if($timezone !== false){
-			Server::getInstance()->getLogger()->notice(ScoreHud::PREFIX . "Server timezone successfully set to " . $timezone);
+			Server::getInstance()->getLogger()->notice(Scoreboard::PREFIX . "Server timezone successfully set to " . $timezone);
 
 			return date_default_timezone_set($timezone);
 		}

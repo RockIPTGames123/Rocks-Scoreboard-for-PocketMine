@@ -33,10 +33,10 @@ interface Addon{
 	/**
 	 * Addon constructor.
 	 *
-	 * @param ScoreHud         $scoreHud
+	 * @param Scoreboard         $scoreboard
 	 * @param AddonDescription $description
 	 */
-	public function __construct(ScoreHud $scoreHud, AddonDescription $description);
+	public function __construct(Scoreboard $scoreboard, AddonDescription $description);
 
 	/**
 	 * This is called whenever an Addon is successfully enabled. Depends on your use case.
@@ -45,11 +45,11 @@ interface Addon{
 	public function onEnable(): void;
 
 	/**
-	 * Returns the ScoreHud plugin for whatever reason an addon would like to use it.
+	 * Returns the Scoreboard plugin for whatever reason an addon would like to use it.
 	 *
-	 * @return ScoreHud
+	 * @return Scoreboard
 	 */
-	public function getScoreHud(): ScoreHud;
+	public function getScoreboard(): Scoreboard;
 
 	/**
 	 * Returns the description containing name, main etc of the addon.

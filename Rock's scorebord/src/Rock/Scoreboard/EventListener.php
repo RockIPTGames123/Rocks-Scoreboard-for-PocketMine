@@ -23,15 +23,15 @@ use pocketmine\event\player\PlayerQuitEvent;
 
 class EventListener implements Listener{
 	
-	/** @var ScoreHud */
+	/** @var Scoreboard */
 	private $plugin;
 	
 	/**
 	 * EventListener constructor.
 	 *
-	 * @param ScoreHud $plugin
+	 * @param Scoreboard $plugin
 	 */
-	public function __construct(ScoreHud $plugin){
+	public function __construct(Scoreboard $plugin){
 		$this->plugin = $plugin;
 	}
 	

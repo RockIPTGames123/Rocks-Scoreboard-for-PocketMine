@@ -22,7 +22,7 @@ use pocketmine\scheduler\Task;
 
 class ScoreUpdateTask extends Task{
 
-	/** @var ScoreHud */
+	/** @var Scoreboard */
 	private $plugin;
 	/** @var int */
 	private $titleIndex = 0;
@@ -30,7 +30,7 @@ class ScoreUpdateTask extends Task{
 	/**
 	 * ScoreUpdateTask constructor.
 	 *
-	 * @param ScoreHud $plugin
+	 * @param Scoreboard $plugin
 	 */
 	public function __construct(Scoreboard $plugin){
 		$this->plugin = $plugin;

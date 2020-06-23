@@ -25,13 +25,13 @@ use pocketmine\Player;
 
 class ScoreboardCommand extends PluginCommand{
 
-	/** @var ScoreHud */
+	/** @var Scoreboard */
 	private $plugin;
 
 	/**
-	 * ScoreHudCommand constructor.
+	 * ScoreboardCommand constructor.
 	 *
-	 * @param ScoreHud $plugin
+	 * @param Scoreboard $plugin
 	 */
 	public function __construct(Scoreboard $plugin){
 		parent::__construct("scoreboard", $plugin);
@@ -65,12 +65,12 @@ class ScoreboardCommand extends PluginCommand{
 		}
 		switch($args[0]){
 			case "about":
-				$sender->sendMessage(Scoreboard::PREFIX . "§6Score§eHud §av" . $this->plugin->getDescription()->getVersion() . "§a.Plugin by §dRockIPTGames123§a. Contact on §5Discord: IAJ#7648§a.");
+				$sender->sendMessage(Scoreboard::PREFIX . "§6Score§eboard §av" . $this->plugin->getDescription()->getVersion() . "§a.Plugin by §dRockIPTGames123§a. Contact on §5Discord: IAJ#7648§a.");
 				break;
 
 			case "on":
-				if(isset($this->plugin->disabledScoreHudPlayers[strtolower($sender->getName())])){
-					unset($this->plugin->disabledScoreHudPlayers[strtolower($sender->getName())]);
+				if(isset($this->plugin->disabledScoreboardPlayers[strtolower($sender->getName())])){
+					unset($this->plugin->disabledScoreboardPlayers[strtolower($sender->getName())]);
 					$sender->sendMessage(Scoreboard::PREFIX . "§aSuccessfully enabled Rock's Scoreboard.");
 				}else{
 					$sender->sendMessage(Scoreboard::PREFIX . "§cIt is already enabled for you.");

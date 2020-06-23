@@ -15,9 +15,9 @@ declare(strict_types = 1);
 * Discord: IAJ#7648
 */
 
-namespace JackMD\ScoreHud\addon;
+namespace Rock\Scoreboard\addon;
 
-use JackMD\ScoreHud\ScoreHud;
+use Rock\Scoreboard\Scoreboard;
 use pocketmine\Server;
 
 /**
@@ -29,23 +29,23 @@ use pocketmine\Server;
  *
  * Class AddonBase
  *
- * @package JackMD\ScoreHud\addon
+ * @package Rock\Scoreboard\addon
  */
 abstract class AddonBase implements Addon{
 
-	/** @var ScoreHud */
-	private $scoreHud;
+	/** @var Scoreboard */
+	private $scoreboard;
 	/** @var AddonDescription */
 	private $description;
 
 	/**
 	 * AddonBase constructor.
 	 *
-	 * @param ScoreHud         $scoreHud
+	 * @param Scoreboard         $scoreboard
 	 * @param AddonDescription $description
 	 */
-	public function __construct(ScoreHud $scoreHud, AddonDescription $description){
-		$this->scoreHud = $scoreHud;
+	public function __construct(Scoreboard $scoreboard, AddonDescription $description){
+		$this->scoreboard = $scoreboard;
 		$this->description = $description;
 	}
 
@@ -53,10 +53,10 @@ abstract class AddonBase implements Addon{
 	}
 
 	/**
-	 * @return ScoreHud
+	 * @return Scoreboard
 	 */
-	public function getScoreHud(): ScoreHud{
-		return $this->scoreHud;
+	public function getScoreboard(): Scoreboard{
+		return $this->scoreboard;
 	}
 
 	/**
@@ -70,6 +70,6 @@ abstract class AddonBase implements Addon{
 	 * @return Server
 	 */
 	public function getServer(): Server{
-		return $this->scoreHud->getServer();
+		return $this->scoreboard->getServer();
 	}
 }

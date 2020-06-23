@@ -2,38 +2,22 @@
 declare(strict_types = 1);
 
 /**
- *     _____                    _   _           _
- *    /  ___|                  | | | |         | |
- *    \ `--.  ___ ___  _ __ ___| |_| |_   _  __| |
- *     `--. \/ __/ _ \| '__/ _ \  _  | | | |/ _` |
- *    /\__/ / (_| (_) | | |  __/ | | | |_| | (_| |
- *    \____/ \___\___/|_|  \___\_| |_/\__,_|\__,_|
- *
- * ScoreHud, a Scoreboard plugin for PocketMine-MP
- * Copyright (c) 2018 JackMD  < https://github.com/JackMD >
- *
- * Discord: JackMD#3717
- * Twitter: JackMTaylor_
- *
- * This software is distributed under "GNU General Public License v3.0".
- * This license allows you to use it and/or modify it but you are not at
- * all allowed to sell this plugin at any cost. If found doing so the
- * necessary action required would be taken.
- *
- * ScoreHud is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License v3.0 for more details.
- *
- * You should have received a copy of the GNU General Public License v3.0
- * along with this program. If not, see
- * <https://opensource.org/licenses/GPL-3.0>.
- * ------------------------------------------------------------------------
- */
+*__________               __   /\          _________                         ___.                          .___
+*\______   \ ____   ____ |  | _)/ ______  /   _____/ ____  ___________   ____\_ |__   _________ _______  __| _/
+* |       _//  _ \_/ ___\|  |/ / /  ___/  \_____  \_/ ___\/  _ \_  __ \_/ __ \| __ \ /  _ \__  \\_  __ \/ __ | 
+* |    |   (  <_> )  \___|    <  \___ \   /        \  \__(  <_> )  | \/\  ___/| \_\ (  <_> ) __ \|  | \/ /_/ | 
+* |____|_  /\____/ \___  >__|_ \/____  > /_______  /\___  >____/|__|    \___  >___  /\____(____  /__|  \____ | 
+*        \/            \/     \/     \/          \/     \/                  \/    \/           \/           \/ 
+*
+* Rock's Scoreboard, a Scoreboard plugin for PocketMine-MP
+*
+* Any problems contact me on:
+* Discord: IAJ#7648
+*/
 
-namespace JackMD\ScoreHud\addon;
+namespace Rock\Scoreboard\addon;
 
-use JackMD\ScoreHud\ScoreHud;
+use Rock\Scoreboard\Scoreboard;
 use pocketmine\plugin\Plugin;
 use pocketmine\scheduler\ClosureTask;
 
@@ -41,19 +25,19 @@ class AddonManager{
 
 	/** @var Addon[] */
 	protected $addons = [];
-	/** @var ScoreHud */
-	private $scoreHud;
+	/** @var Scoreboard */
+	private $scoreboard;
 
 	/**
 	 * AddonManager constructor.
 	 *
-	 * @param ScoreHud $scoreHud
+	 * @param Scoreboard $scoreboard
 	 */
-	public function __construct(ScoreHud $scoreHud){
-		$this->scoreHud = $scoreHud;
+	public function __construct(Scoreboard $scoreboard){
+		$this->scoreboard = $scoreboard;
 
-		if(!is_dir(ScoreHud::$addonPath)){
-			mkdir(ScoreHud::$addonPath);
+		if(!is_dir(Scoreboard::$addonPath)){
+			mkdir(Scoreboard::$addonPath);
 		}
 
 		/* This task enables addons to only start loading after complete server load */
@@ -61,7 +45,7 @@ class AddonManager{
 			$this->loadAddons();
 		});
 
-		$scoreHud->getScheduler()->scheduleDelayedTask($task, 0);
+		$scoreboard->getScheduler()->scheduleDelayedTask($task, 0);
 
 	}
 
@@ -121,10 +105,10 @@ class AddonManager{
 	 * @return array
 	 */
 	private function loadAddons(): array{
-		$directory = ScoreHud::$addonPath;
+		$directory = Scoreboard::$addonPath;
 
-		$scoreHud = $this->scoreHud;
-		$server = $scoreHud->getServer();
+		$scoreboard = $this->scoreboard;
+		$server = $scoreboard->getServer();
 
 		if(!is_dir($directory)){
 			return [];
@@ -148,14 +132,14 @@ class AddonManager{
 			}
 
 			if((isset($addons[$name]) )|| ($this->getAddon($name) instanceof Addon)){
-				$scoreHud->getLogger()->error("§cCould not load addon §4{$name}§c. Addon with the same name already exists.");
+				$scoreboard->getLogger()->error("§cCould not load addon §4{$name}§c. Addon with the same name already exists.");
 
 				continue;
 			}
 
 			if(!empty($description->getCompatibleApis())){
 				if(!$server->getPluginManager()->isCompatibleApi(...$description->getCompatibleApis())){
-					$scoreHud->getLogger()->error("§cCould not load addon §4{$name}§c. Incompatible API version. Addon requires one of §4" . implode(", ", $description->getCompatibleApis()));
+					$scoreboard->getLogger()->error("§cCould not load addon §4{$name}§c. Incompatible API version. Addon requires one of §4" . implode(", ", $description->getCompatibleApis()));
 
 					continue;
 				}
@@ -178,7 +162,7 @@ class AddonManager{
 
 							unset($dependencies[$name][$key]);
 						}else{
-							$scoreHud->getLogger()->error("§cCould not load addon §4{$name}§c. Unknown dependency: §4$dependency");
+							$scoreboard->getLogger()->error("§cCould not load addon §4{$name}§c. Unknown dependency: §4$dependency");
 
 							unset($addons[$name]);
 							continue 2;
@@ -199,7 +183,7 @@ class AddonManager{
 					if($addon instanceof Addon){
 						$loadedAddons[$name] = $addon;
 					}else{
-						$scoreHud->getLogger()->error("§cCould not load addon §4{$name}§c.");
+						$scoreboard->getLogger()->error("§cCould not load addon §4{$name}§c.");
 					}
 				}
 			}
@@ -215,14 +199,14 @@ class AddonManager{
 						if($addon instanceof Addon){
 							$loadedAddons[$name] = $addon;
 						}else{
-							$scoreHud->getLogger()->error("§cCould not load addon §4{$name}§c.");
+							$scoreboard->getLogger()->error("§cCould not load addon §4{$name}§c.");
 						}
 					}
 				}
 
 				if($missingDependency){
 					foreach($addons as $name => $file){
-						$scoreHud->getLogger()->error("§cCould not load addon §4{$name}§c. Circular dependency detected.");
+						$scoreboard->getLogger()->error("§cCould not load addon §4{$name}§c. Circular dependency detected.");
 					}
 
 					$addons = [];
@@ -246,13 +230,13 @@ class AddonManager{
 			$mainClass = $description->getMain();
 
 			if(!class_exists($mainClass, true)){
-				$this->scoreHud->getLogger()->error("Main class for addon " . $description->getName() . " not found.");
+				$this->scoreboard->getLogger()->error("Main class for addon " . $description->getName() . " not found.");
 
 				return null;
 			}
 
 			if(!is_a($mainClass, Addon::class, true)){
-				$this->scoreHud->getLogger()->error("Main class for addon " . $description->getName() . " is not an instance of " . Addon::class);
+				$this->scoreboard->getLogger()->error("Main class for addon " . $description->getName() . " is not an instance of " . Addon::class);
 
 				return null;
 			}
@@ -261,18 +245,18 @@ class AddonManager{
 				$name = $description->getName();
 
 				/** @var Addon $addon */
-				$addon = new $mainClass($this->scoreHud, $description);
+				$addon = new $mainClass($this->scoreboard, $description);
 				$addon->onEnable();
 
 				$this->addons[$name] = $addon;
 
-				$this->scoreHud->getLogger()->debug("§bAddon §a$name §bsuccessfully enabled.");
-				$this->scoreHud->getAddonUpdater()->check($addon);
+				$this->scoreboard->getLogger()->debug("§bAddon §a$name §bsuccessfully enabled.");
+				$this->scoreboard->getAddonUpdater()->check($addon);
 
 				return $addon;
 			}
 			catch(\Throwable $e){
-				$this->scoreHud->getLogger()->logException($e);
+				$this->scoreboard->getLogger()->logException($e);
 
 				return null;
 			}

@@ -15,12 +15,12 @@ declare(strict_types = 1);
 * Discord: IAJ#7648
 */
 
-namespace JackMD\ScoreHud;
+namespace Rock\Scoreboard;
 
 use Rock\ConfigUpdater\ConfigUpdater;
 use Rock\ScoreFactory\ScoreFactory;
 use Rock\Scoreboard\addon\AddonManager;
-use Rock\Scoreboard\commands\ScoreHudCommand;
+use Rock\Scoreboard\commands\ScoreboardCommand;
 use Rock\Scoreboard\task\ScoreUpdateTask;
 use Rock\Scoreboard\updater\AddonUpdater;
 use Rock\Scoreboard\utils\Utils;
@@ -28,7 +28,7 @@ use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 
-class ScoreHud extends PluginBase{
+class Scoreboard extends PluginBase{
 
 	/** @var string */
 	public const PREFIX = "§8[§6S§eH§8]§r ";
@@ -40,27 +40,27 @@ class ScoreHud extends PluginBase{
 
 	/** @var string */
 	public static $addonPath = "";
-	/** @var ScoreHud|null */
+	/** @var Scoreboard|null */
 	private static $instance = null;
 
 	/** @var array */
-	public $disabledScoreHudPlayers = [];
+	public $disabledScoreboardPlayers = [];
 
 	/** @var AddonUpdater */
 	private $addonUpdater;
 	/** @var AddonManager */
 	private $addonManager;
 	/** @var Config */
-	private $scoreHudConfig;
+	private $scoreboardConfig;
 	/** @var null|array */
 	private $scoreboards = [];
 	/** @var null|array */
 	private $scorelines = [];
 
 	/**
-	 * @return ScoreHud|null
+	 * @return Scoreboard|null
 	 */
-	public static function getInstance(): ?ScoreHud{
+	public static function getInstance(): ?Scoreboard{
 		return self::$instance;
 	}
 
@@ -79,7 +79,7 @@ class ScoreHud extends PluginBase{
 		$this->addonUpdater = new AddonUpdater($this);
 		$this->addonManager = new AddonManager($this);
 
-		$this->getServer()->getCommandMap()->register("scorehud", new ScoreHudCommand($this));
+		$this->getServer()->getCommandMap()->register("scorehud", new ScoreboardCommand($this));
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 
 		$this->getScheduler()->scheduleRepeatingTask(new ScoreUpdateTask($this), (int) $this->getConfig()->get("update-interval") * 20);
@@ -93,14 +93,14 @@ class ScoreHud extends PluginBase{
 
 		$this->saveResource("addons" . DIRECTORY_SEPARATOR . "README.txt");
 		$this->saveResource("scorehud.yml");
-		$this->scoreHudConfig = new Config($this->getDataFolder() . "scorehud.yml", Config::YAML);
+		$this->scoreboardConfig = new Config($this->getDataFolder() . "scorehud.yml", Config::YAML);
 
 		ConfigUpdater::checkUpdate($this, $this->getConfig(), "config-version", self::CONFIG_VERSION);
-		ConfigUpdater::checkUpdate($this, $this->scoreHudConfig, "scorehud-version", self::SCOREHUD_VERSION);
+		ConfigUpdater::checkUpdate($this, $this->scoreboardConfig, "scorehud-version", self::SCOREHUD_VERSION);
 	}
 
 	private function initScoreboards(): void{
-		foreach($this->scoreHudConfig->getNested("scoreboards") as $world => $data){
+		foreach($this->scoreboardConfig->getNested("scoreboards") as $world => $data){
 			$world = strtolower($world);
 
 			$this->scoreboards[$world] = $data;
@@ -111,8 +111,8 @@ class ScoreHud extends PluginBase{
 	/**
 	 * @return Config
 	 */
-	public function getScoreHudConfig(): Config{
-		return $this->scoreHudConfig;
+	public function getScoreboardConfig(): Config{
+		return $this->scoreboardConfig;
 	}
 
 	/**
@@ -146,7 +146,7 @@ class ScoreHud extends PluginBase{
 			return;
 		}
 
-		if(isset($this->disabledScoreHudPlayers[strtolower($player->getName())])){
+		if(isset($this->disabledScoreboardPlayers[strtolower($player->getName())])){
 			return;
 		}
 
@@ -227,7 +227,7 @@ class ScoreHud extends PluginBase{
 	 * @param Player $player
 	 */
 	public function displayDefaultScoreboard(Player $player): void{
-		$dataConfig = $this->scoreHudConfig;
+		$dataConfig = $this->scoreboardConfig;
 
 		$lines = $dataConfig->get("score-lines");
 
