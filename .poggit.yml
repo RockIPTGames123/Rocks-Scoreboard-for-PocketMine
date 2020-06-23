@@ -1,0 +1,8 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/RockIPTGames123/Rocks-Scoreboard-for-pocketmine
+build-by-default: true
+branches:
+- master
+projects:
+  Rock's scorebord:
+    path: Rock's scorebord/
+...
